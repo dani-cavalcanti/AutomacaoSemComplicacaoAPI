@@ -5,79 +5,67 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import io.restassured.response.Response;
+import utils.RestUtils;
 
-import static io.restassured.RestAssured.*;
+
 
 public class ViaCepGetTest {
 	
 	static String url = "http://viacep.com.br/ws/";
-	static Response response;
+
 	
 	@BeforeAll
 	public static void setResponse() {
-		baseURI = url;
+		RestUtils.setBaseUri(url);
 		String cep = "23595490";
-		response = getDadosEndereco(cep);
+		RestUtils.getRequest(cep+"/json");
 		
 	}
 	
 	@Test
 	public void validaStatusGet() {
-		baseURI = url;
-		
+		RestUtils.setBaseUri(url);
+				
 		String cep = "23595490";
-		getStatusEndereco(cep);
+		getStatusEndereco(cep+"/json");
 		
 		cep = "23595060";
-		getStatusEndereco(cep);
-
-		cep = "04055041";
-		getStatusEndereco(cep);
-		
+		String endpoint = cep+"/json";
+		getStatusEndereco(endpoint);		
 		
 	}
 	
 	@Test
 	public void validaLogradouro() {
 
-		assertEquals("Rua 62", getResponse("logradouro"));
+		assertEquals("Rua 62", RestUtils.getResponse("logradouro"));
 	}
 	
 	@Test
 	public void validaComplemento() {
 		
-		assertEquals("(Cj Cesarão)", getResponse("complemento"));
+		assertEquals("(Cj Cesarão)", RestUtils.getResponse("complemento"));
 	}
 	
 	@Test
 	public void validaBairro() {
-	   assertEquals("Santa Cruz", getResponse("bairro"));
+	   assertEquals("Santa Cruz", RestUtils.getResponse("bairro"));
 	}
 	
 	@Test
 	public void validaLocalidade() {
-		assertEquals("Rio de Janeiro", getResponse("localidade"));
+		assertEquals("Rio de Janeiro", RestUtils.getResponse("localidade"));
 	}
 	
-	public Object getResponse(String key) {
-		return response.getBody().jsonPath().get(key);
+	
+	public void validaStatusCode(int status) {
+		assertEquals(status,RestUtils.getStatusCode() );
 	}
 	
-	private static Response getDadosEndereco(String cep) {
-		return when()
-				.get(cep+"/json")
-				.then()
-				.extract()
-				.response();
-	}
-
-	private void getStatusEndereco(String cep) {
-		given()
-		.when()
-		.get(cep+"/json")
-		.then()
-		.statusCode(200);
+	public void getStatusEndereco(String endpoint) {
+		RestUtils.getRequest(endpoint);
+		System.out.println(RestUtils.getBody());
+		validaStatusCode(200);
 	}
 
 }
