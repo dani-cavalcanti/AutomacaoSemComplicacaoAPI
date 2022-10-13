@@ -85,7 +85,7 @@ public class RestUtils {
 				.response();
 	}
 	
-	public static void postRequest(String endpoint, Object json, LinkedHashMap<String, String> header) {
+	public static void postRequest(String endpoint, LinkedHashMap<String, String> header, Object json) {
 		response = 
 				given()
 				.relaxedHTTPSValidation()
