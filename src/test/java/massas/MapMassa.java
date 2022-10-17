@@ -7,7 +7,7 @@ import java.util.List;
 import entidades.Header;
 import entidadesMap.DocMap;
 import entidadesMap.LoginMap;
-import entidadesMap.Map;
+import entidadesMap.JsonPlaceHolderMap;
 
 public class MapMassa {
 	
@@ -19,11 +19,11 @@ public class MapMassa {
 	public static Header header = new Header(null);
 	public static DocMap documento = new DocMap("cpf", "01088345735");
 	public static List<LinkedHashMap<String, Object>> documentos = new ArrayList<>();
-	public static Map json = new Map("teste", "Dani Cavalcanti", 37, null);
+	public static JsonPlaceHolderMap json = new JsonPlaceHolderMap("teste", "Dani Cavalcanti", 37, null);
 	
 	public static void addDocumentos() {
 		documentos.add(documento.getDocMap());
-		json.setMap("documentos", documento);
+		json.setJsonPlaceHolderMap("documentos", documento);
 	}
 
 }
